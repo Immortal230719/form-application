@@ -9,6 +9,7 @@
 </head>
 <body>
   <div class="container">
+    <button id="clearCookies">clear Cookies</button>
     <div id="welcome" class="wrapper">
       <h1>Welcome! <br>
       Please, choose your options.
@@ -52,6 +53,20 @@
             <span class="empty"></span>
             <button id="nextStep1" class="start_btn" type="submit" disabled>next</button>
           </div>
+      </form>
+    </div>
+    <div id="stepTwo" class="wrapper hidden">
+      <h2>Your Salary</h2>
+      <form action="#" id="salary">
+        <label class="salary-label" for="lessSalary"> <span class="salary-text"></span> <input value="less" id="lessSalary" name="salary"  type="radio"></label>
+        <label class="salary-label" for="middleSalary"> <span class="salary-text"></span> <input value="middle" id="middleSalary" name="salary"  type="radio"></label>
+        <label class="salary-label" for="goodSalary"> <span class="salary-text"></span> <input value="good" id="goodSalary" name="salary"  type="radio"></label>
+        <label class="salary-label" for="bestSalary"> <span class="salary-text"></span> <input value="best" id="bestSalary" name="salary"  type="radio"></label>
+        <div class="flex">
+          <button id="backStep2" class="start_btn" type="button">back</button>
+          <span class="empty"></span>
+          <button id="nextStep2" class="start_btn" type="submit" disabled>next</button>
+        </div>
       </form>
     </div>
   </div>

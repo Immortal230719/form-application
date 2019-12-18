@@ -103,3 +103,13 @@ select {
   color: rgba(170, 170, 170, 0.753);
   border-radius: 10px;
 }
+
+.salary-label input {
+  position: relative;
+  top: 3px;
+  left: 10px;
+  width: 20px;
+  height: 20px;
+  box-shadow: 0 0 0 0;
+}
+

@@ -1,7 +1,22 @@
 "Use Strict";
 
 $(document).ready(function() {
+  // variables
+  var salaryRusArray = ["less 10000", "10000-25000", "25000-50000", "50000+"];
+  var salaryUSAArray = ["less 100", "100-500", "500-1500", "1500+"];
   var userObj = {};
+  if (!$.isEmptyObject(Cookies.get())) {
+    userObj = {
+      name: Cookies.get("name"),
+      age: Cookies.get("age"),
+      country: Cookies.get("country"),
+      city: Cookies.get("city"),
+      salary: Cookies.get("salary")
+    };
+  }
+  var json;
+  var stepOne = $("#stepOne");
+  var stepTwo = $("#stepTwo");
   var nextStepBtn1 = $("#nextStep1");
   var backStepBtn1 = $("#backStep1");
   var inputUserName = $("#userName");
@@ -11,6 +26,34 @@ $(document).ready(function() {
   var selectGerCity = $("#gerCitySelect");
   var selectUSACity = $("#usaCitySelect");
   var formStepOne = $("#formStepOne");
+  var clearCookiesBtn = $("#clearCookies");
+
+  // STEP TWO variables
+
+  var stepTwoBtnBack = $("#backStep2");
+  var stepTwoBtnNext = $("#nextStep2");
+  var stepTwoFormLabels = $("#salary .salary-text");
+  var salaryValue = "";
+
+  // get cookies
+  if (Cookies.get("salary")) {
+    $("#welcome").fadeOut(0);
+    stepOne.fadeOut(100);
+    var salaryCookie = Cookies.get("salary");
+    setCookieSalary(salaryCookie);
+    renderStepTwo(userObj);
+    stepTwo.fadeIn(1000);
+    stepTwoBtnNext.prop("disabled", false);
+  } else if (!$.isEmptyObject(Cookies.get())) {
+    $("#welcome").fadeOut(0);
+    nextStepBtn1.prop("disabled", false);
+
+    setCookieStepOne();
+
+    // hide div "welcome"
+    stepOne.fadeIn(1000);
+  }
+
   // validate forms
 
   var validator = formStepOne.validate({
@@ -57,45 +100,14 @@ $(document).ready(function() {
 
   inputUserName.rules("add", { pattern: "[a-zA-Z]" });
 
-  // function reset Form
-
-  function resetForm($form) {
-    $form.find("input, select").val("");
-  }
-
   // first page
 
   $("#startBtn").on("click", function() {
     $("#welcome").fadeOut(0);
-    $("#stepOne").fadeIn(1000);
-
-    // get cookies
-    if (!$.isEmptyObject(Cookies.get())) {
+    stepOne.fadeIn(1000);
+    if (userObj.hasOwnProperty("name")) {
+      setCookieStepOne();
       nextStepBtn1.prop("disabled", false);
-
-      inputUserName.val(Cookies.get("name"));
-      inputUserAge.val(Cookies.get("age"));
-      selectUserCountry.val(Cookies.get("country"));
-
-      var userCountry = Cookies.get("country");
-      var userCity = Cookies.get("city");
-
-      switch (userCountry) {
-        case "rus": {
-          selectRusCity.fadeIn().val(userCity);
-          break;
-        }
-        case "ger": {
-          selectGerCity.fadeIn().val(userCity);
-          break;
-        }
-        case "usa": {
-          selectUSACity.fadeIn().val(userCity);
-          break;
-        }
-        default:
-          return;
-      }
     }
   });
 
@@ -144,7 +156,7 @@ $(document).ready(function() {
 
   // button back
   backStepBtn1.on("click", function() {
-    $("#stepOne").fadeOut(0);
+    stepOne.fadeOut(0);
     $("#welcome").fadeIn(1000);
     selectGerCity.fadeOut(0);
     selectUSACity.fadeOut(0);
@@ -185,7 +197,7 @@ $(document).ready(function() {
     }
   });
 
-  // button next enabled
+  // button nextStepOne enabled
 
   var citySelect = formStepOne.find("select[name='city']");
   for (let index = 0; index < citySelect.length; index++) {
@@ -202,7 +214,12 @@ $(document).ready(function() {
     });
   }
 
-  // form data variables
+  // clear Cookies
+
+  clearCookiesBtn.on("click", function(e) {
+    e.preventDefault();
+    clearCookies();
+  });
 
   formStepOne.on("submit", function(e) {
     e.preventDefault();
@@ -227,11 +244,125 @@ $(document).ready(function() {
         return;
     }
 
+    userObj.name = name;
+    userObj.age = age;
+    userObj.country = country;
+    userObj.city = city;
+
     Cookies.set("name", name, { expires: 7 });
     Cookies.set("age", age, { expires: 7 });
     Cookies.set("country", country, { expires: 7 });
     Cookies.set("city", city, { expires: 7 });
+    stepOne.fadeOut(0);
+    stepTwo.fadeIn(1000);
+    json = JSON.stringify(userObj);
+    renderStepTwo(userObj);
   });
 
-  console.log(userObj);
+  // STEP TWO
+
+  stepTwoBtnBack.on("click", function() {
+    stepTwo.fadeOut(0);
+    stepOne.fadeIn(1000);
+    stepTwoFormLabels.each(function(element) {
+      $(element).text("");
+    });
+  });
+
+  // salary form handler
+
+  $("#salary").on("click", function(e) {
+    salaryValue = $("input:checked").val();
+    if (salaryValue) {
+      stepTwoBtnNext.prop("disabled", false);
+    }
+    return;
+  });
+
+  $("#salary").on("submit", function(e) {
+    e.preventDefault();
+    userObj.salary = salaryValue;
+    Cookies.set("salary", salaryValue, { expires: 7 });
+    json = JSON.stringify(userObj);
+  });
+
+  // FUNCTIONS
+
+  function resetForm($form) {
+    $form.find("input, select").val("");
+  }
+
+  function renderStepTwo({ country: value }) {
+    switch (value) {
+      case "rus": {
+        stepTwoFormLabels.each(function(index, el) {
+          var text = salaryRusArray[index];
+          $(el).text(text + " rub");
+        });
+        break;
+      }
+      case "usa": {
+        stepTwoFormLabels.each(function(index, el) {
+          var text = salaryUSAArray[index];
+          $(el).text(text + " $");
+        });
+        break;
+      }
+      case "ger": {
+        stepTwoFormLabels.each(function(index, el) {
+          var text = salaryUSAArray[index];
+          $(el).text(text + " €");
+        });
+        break;
+      }
+      default:
+        break;
+    }
+  }
+
+  //set cookies stepOne
+
+  function setCookieStepOne() {
+    inputUserName.val(Cookies.get("name"));
+    inputUserAge.val(Cookies.get("age"));
+    selectUserCountry.val(Cookies.get("country"));
+
+    var userCountry = Cookies.get("country");
+    var userCity = Cookies.get("city");
+
+    switch (userCountry) {
+      case "rus": {
+        selectRusCity.fadeIn().val(userCity);
+        break;
+      }
+      case "ger": {
+        selectGerCity.fadeIn().val(userCity);
+        break;
+      }
+      case "usa": {
+        selectUSACity.fadeIn().val(userCity);
+        break;
+      }
+      default:
+        return;
+    }
+    return;
+  }
+
+  function setCookieSalary(salaryValueStr) {
+    if (typeof salaryValueStr === "string") {
+      $("#" + salaryValueStr + "Salary").prop("checked", true);
+    } else return;
+    return;
+  }
+
+  function clearCookies() {
+    Cookies.remove("name");
+    Cookies.remove("age");
+    Cookies.remove("country");
+    Cookies.remove("city");
+    Cookies.remove("salary");
+    Cookies.remove();
+    return;
+  }
 });
