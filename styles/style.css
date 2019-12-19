@@ -78,6 +78,12 @@ label.error {
   padding: 5px 0px 0 35px;
 }
 
+.message {
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+}
+
 form {
   display: flex;
   align-items: center;

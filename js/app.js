@@ -1,6 +1,92 @@
 "Use Strict";
 
 $(document).ready(function() {
+  // banks in city
+
+  var moscowArr = [
+    "sberbank",
+    "VTB",
+    "mtsbank",
+    "akibank",
+    "avangard",
+    "TheIronBankofBraavos"
+  ];
+  var spbArr = ["sberbank", "alfabank", "SPBBank", "TheIronBankofBraavos"];
+  var kazanArr = ["AKBarsBank", "TATNEFT", "VTB", "TheIronBankofBraavos"];
+  var berlinArr = ["DeutscheBank", "DZBank", "TheIronBankofBraavos"];
+  var dusseldorfArr = ["CommerzBank", "TheIronBankofBraavos"];
+  var nYorkArr = [
+    "BankOfAMERICA",
+    "CitiBank",
+    "CNBBank",
+    "NYBank",
+    "TheIronBankofBraavos"
+  ];
+  var losAngelesArr = [];
+
+  // banks in salary
+
+  var salaryArr = [
+    [
+      "sberbank",
+      "VTB",
+      "mtsbank",
+      "alfabank",
+      "AKBarsBank",
+      "BankOfAMERICA",
+      "CitiBank",
+      "CNBBank",
+      "DeutscheBank",
+      "DZBank",
+      "CommerzBank"
+    ],
+    [
+      "sberbank",
+      "VTB",
+      "mtsbank",
+      "alfabank",
+      "AKBarsBank",
+      "TATNEFT",
+      "VTB",
+      "BankOfAMERICA",
+      "CitiBank",
+      "CNBBank",
+      "DeutscheBank",
+      "DZBank",
+      "CommerzBank"
+    ],
+    [
+      "sberbank",
+      "VTB",
+      "mtsbank",
+      "akibank",
+      "alfabank",
+      "AKBarsBank",
+      "TATNEFT",
+      "VTB",
+      "BankOfAMERICA",
+      "NYBank",
+      "DeutscheBank",
+      "DZBank",
+      "CommerzBank"
+    ],
+    [
+      "sberbank",
+      "VTB",
+      "avangard",
+      "SPBBank",
+      "AKBarsBank",
+      "TATNEFT",
+      "VTB",
+      "BankOfAMERICA",
+      "NYBank",
+      "DeutscheBank",
+      "DZBank",
+      "CommerzBank",
+      "TheIronBankofBraavos"
+    ]
+  ];
+
   // variables
   var salaryRusArray = ["less 10000", "10000-25000", "25000-50000", "50000+"];
   var salaryUSAArray = ["less 100", "100-500", "500-1500", "1500+"];
@@ -34,6 +120,12 @@ $(document).ready(function() {
   var stepTwoBtnNext = $("#nextStep2");
   var stepTwoFormLabels = $("#salary .salary-text");
   var salaryValue = "";
+
+  // step three variables
+
+  var stepThreeWrapper = $("#stepThree");
+  var stepThreeBtnBack = $("#backStep3");
+  var stepThreeBtnNext = $("#nextStep3");
 
   // get cookies
   if (Cookies.get("salary")) {
@@ -169,21 +261,21 @@ $(document).ready(function() {
 
   // enable select of City
 
-  selectUserCountry.on("change", function(e) {
+  selectUserCountry.on("change", function() {
     switch ($(this).val()) {
-      case "rus": {
+      case "Russia": {
         selectGerCity.fadeOut(0);
         selectUSACity.fadeOut(0);
         selectRusCity.fadeIn();
         break;
       }
-      case "ger": {
+      case "Germany": {
         selectRusCity.fadeOut(0);
         selectUSACity.fadeOut(0);
         selectGerCity.fadeIn();
         break;
       }
-      case "usa": {
+      case "USA": {
         selectGerCity.fadeOut(0);
         selectRusCity.fadeOut(0);
         selectUSACity.fadeIn();
@@ -228,15 +320,15 @@ $(document).ready(function() {
     var country = $(this.country).val();
 
     switch (country) {
-      case "rus": {
+      case "Russia": {
         var city = selectRusCity.val();
         break;
       }
-      case "ger": {
+      case "Germany": {
         var city = selectGerCity.val();
         break;
       }
-      case "usa": {
+      case "USA": {
         var city = selectUSACity.val();
         break;
       }
@@ -262,8 +354,11 @@ $(document).ready(function() {
   // STEP TWO
 
   stepTwoBtnBack.on("click", function() {
+    setCookieStepOne();
+    nextStepBtn1.prop("disabled", false);
     stepTwo.fadeOut(0);
     stepOne.fadeIn(1000);
+
     stepTwoFormLabels.each(function(element) {
       $(element).text("");
     });
@@ -284,6 +379,79 @@ $(document).ready(function() {
     userObj.salary = salaryValue;
     Cookies.set("salary", salaryValue, { expires: 7 });
     json = JSON.stringify(userObj);
+    stepTwo.fadeOut(0);
+    stepThreeWrapper.fadeIn(1000);
+    var ageFilter = parseInt(userObj.age);
+    var cityFilter = userObj.city;
+    if (userObj.country === "Russia" && ageFilter > 60) {
+      $("#step3Message2").fadeIn(0);
+      return;
+    }
+    switch (cityFilter) {
+      case "Moscow": {
+        getBanksFromArrays(moscowArr, salaryArr, salaryValue);
+        break;
+      }
+      case "SaintPeterburg": {
+        getBanksFromArrays(spbArr, salaryArr, salaryValue);
+        break;
+      }
+      case "Kazan": {
+        getBanksFromArrays(kazanArr, salaryArr, salaryValue);
+        break;
+      }
+      case "Berlin": {
+        getBanksFromArrays(berlinArr, salaryArr, salaryValue);
+        renderPensionerBank(ageFilter);
+        break;
+      }
+      case "Gamburg": {
+        getBanksFromArrays(berlinArr, salaryArr, salaryValue);
+        renderPensionerBank(ageFilter);
+        break;
+      }
+      case "Dusseldorf": {
+        getBanksFromArrays(dusseldorfArr, salaryArr, salaryValue);
+        renderPensionerBank(ageFilter);
+        break;
+      }
+      case "NewYork": {
+        getBanksFromArrays(nYorkArr, salaryArr, salaryValue);
+        renderPensionerBank(ageFilter);
+        break;
+      }
+      case "LosAngeles": {
+        $("#step3Message").fadeIn(0);
+        break;
+      }
+      default:
+        break;
+    }
+  });
+
+  //STEP THREE
+
+  // bank form handler
+
+  $("#bank").on("click", function(e) {
+    bankValue = $("input:checked").val();
+    if (bankValue) {
+      stepThreeBtnNext.prop("disabled", false);
+    }
+    return;
+  });
+
+  stepThreeBtnBack.on("click", function() {
+    setCookieSalary(userObj.salary);
+    nextStepBtn1.prop("disabled", false);
+    stepThreeWrapper.fadeOut(0);
+    stepTwo.fadeIn(1000);
+    $("#bank")
+      .children("label")
+      .fadeOut(0);
+    $("#step3Message").fadeOut(0);
+    $("#step3Message2").fadeOut(0);
+    return;
   });
 
   // FUNCTIONS
@@ -294,21 +462,21 @@ $(document).ready(function() {
 
   function renderStepTwo({ country: value }) {
     switch (value) {
-      case "rus": {
+      case "Russia": {
         stepTwoFormLabels.each(function(index, el) {
           var text = salaryRusArray[index];
           $(el).text(text + " rub");
         });
         break;
       }
-      case "usa": {
+      case "USA": {
         stepTwoFormLabels.each(function(index, el) {
           var text = salaryUSAArray[index];
           $(el).text(text + " $");
         });
         break;
       }
-      case "ger": {
+      case "Germany": {
         stepTwoFormLabels.each(function(index, el) {
           var text = salaryUSAArray[index];
           $(el).text(text + " €");
@@ -331,15 +499,15 @@ $(document).ready(function() {
     var userCity = Cookies.get("city");
 
     switch (userCountry) {
-      case "rus": {
+      case "Russia": {
         selectRusCity.fadeIn().val(userCity);
         break;
       }
-      case "ger": {
+      case "Germany": {
         selectGerCity.fadeIn().val(userCity);
         break;
       }
-      case "usa": {
+      case "USA": {
         selectUSACity.fadeIn().val(userCity);
         break;
       }
@@ -363,6 +531,41 @@ $(document).ready(function() {
     Cookies.remove("city");
     Cookies.remove("salary");
     Cookies.remove();
+    return;
+  }
+
+  function getBanksFromArrays(arrayOfCity, arrayOfSalary, salaryValue) {
+    var indexOfSalary = parseInt(salaryValue);
+    var resultArr = [];
+    // filter our arrays to get resultArray of Banks
+    for (let index = 0; index < arrayOfCity.length; index++) {
+      var bankInCity = arrayOfCity[index];
+      for (
+        let index = 0;
+        index < arrayOfSalary[indexOfSalary].length;
+        index++
+      ) {
+        if (bankInCity === arrayOfSalary[indexOfSalary][index]) {
+          resultArr.push(arrayOfSalary[indexOfSalary][index]);
+        } else continue;
+      }
+    }
+    console.log(resultArr);
+    // renser result banks
+    resultArr.forEach(e =>
+      $(`#${e}`)
+        .parents()
+        .fadeIn()
+    );
+    return;
+  }
+
+  function renderPensionerBank(userAge) {
+    if (userAge > 50) {
+      $("#PENSIONERBANK")
+        .parents()
+        .fadeIn(0);
+    } else return;
     return;
   }
 });

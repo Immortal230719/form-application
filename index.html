@@ -27,26 +27,26 @@
         </div>
           <select size="1" name="country" id="countrySelect">
             <option value="default"></option>
-            <option value="rus">Russian Federation</option>
-            <option value="ger">Germany</option>
-            <option value="usa">Unated States of America</option>
+            <option value="Russia">Russian Federation</option>
+            <option value="Germany">Germany</option>
+            <option value="USA">Unated States of America</option>
           </select>
           <select class="hidden" size="1" name="city" id="rusCitySelect">
             <option value="default"></option>
-            <option value="moscow">Moscow</option>
-            <option value="saint Peterburg">Saint Peterburg</option>
-            <option value="kazan">Kazan</option>
+            <option value="Moscow">Moscow</option>
+            <option value="SaintPeterburg">Saint Peterburg</option>
+            <option value="Kazan">Kazan</option>
           </select>
           <select class="hidden" size="1" name="city" id="gerCitySelect">
             <option value="default"></option>
-            <option value="berlin">Berlin</option>
-            <option value="gamburg">Gamburg</option>
-            <option value="dusseldorf">Dusseldorf</option>
+            <option value="Berlin">Berlin</option>
+            <option value="Gamburg">Gamburg</option>
+            <option value="Dusseldorf">Dusseldorf</option>
           </select>
           <select class="hidden" size="1" name="city" id="usaCitySelect">
             <option value="default"></option>
             <option value="NewYork">New York</option>
-            <option value="losAng">Los Angeles</option>
+            <option value="LosAngeles">Los Angeles</option>
           </select>
           <div class="flex">
             <button id="backStep1" class="start_btn" type="button">back</button>
@@ -58,16 +58,66 @@
     <div id="stepTwo" class="wrapper hidden">
       <h2>Your Salary</h2>
       <form action="#" id="salary">
-        <label class="salary-label" for="lessSalary"> <span class="salary-text"></span> <input value="less" id="lessSalary" name="salary"  type="radio"></label>
-        <label class="salary-label" for="middleSalary"> <span class="salary-text"></span> <input value="middle" id="middleSalary" name="salary"  type="radio"></label>
-        <label class="salary-label" for="goodSalary"> <span class="salary-text"></span> <input value="good" id="goodSalary" name="salary"  type="radio"></label>
-        <label class="salary-label" for="bestSalary"> <span class="salary-text"></span> <input value="best" id="bestSalary" name="salary"  type="radio"></label>
+        <label class="salary-label" for="lessSalary"> <span class="salary-text"></span> <input value="0" id="0Salary" name="salary"  type="radio"></label>
+        <label class="salary-label" for="middleSalary"> <span class="salary-text"></span> <input value="1" id="1Salary" name="salary"  type="radio"></label>
+        <label class="salary-label" for="goodSalary"> <span class="salary-text"></span> <input value="2" id="2Salary" name="salary"  type="radio"></label>
+        <label class="salary-label" for="bestSalary"> <span class="salary-text"></span> <input value="3" id="3Salary" name="salary"  type="radio"></label>
         <div class="flex">
           <button id="backStep2" class="start_btn" type="button">back</button>
           <span class="empty"></span>
           <button id="nextStep2" class="start_btn" type="submit" disabled>next</button>
         </div>
       </form>
+    </div>
+    <div id="stepThree" class="wrapper hidden">
+      <h2>Choose Bank</h2>
+      <p id="step3Message" class="message hidden">Sorry, but in your city there no banks with our service</p>
+      <p id="step3Message2" class="message hidden">Sorry, but in your country with your age there no banks with our service</p>
+      <form id="bank" action="#">
+        <!-- banks -->
+        <label class="salary-label hidden" for="sberbank"> <span class="salary-text">Sberbank</span> <input value="SberBank" id="sberbank" name="bank"  type="radio"></label>
+
+        <label class="salary-label hidden" for="VTB"> <span class="salary-text">VTB</span> <input value="vtb" id="VTB" name="bank"  type="radio"></label>
+
+        <label class="salary-label hidden" for="mtsbank"> <span class="salary-text">MTSBank</span> <input value="MTSBank" id="mtsbank" name="bank"  type="radio"></label>
+
+        <label class="salary-label hidden" for="akibank"> <span class="salary-text">Akibank</span> <input value="Akibank" id="akibank" name="bank"  type="radio"></label>
+
+        <label class="salary-label hidden" for="avangard"> <span class="salary-text">Avangard</span> <input value="Avangard" id="avangard" name="bank"  type="radio"></label>
+
+        <label class="salary-label hidden" for="alfabank"> <span class="salary-text">AlfaBank</span> <input value="AlfaBank" id="alfabank" name="bank"  type="radio"></label>
+
+        <label class="salary-label hidden" for="SPBBank"> <span class="salary-text">SPBBank</span> <input value="SBPBank" id="SPBBank" name="bank"  type="radio"></label>
+
+        <label class="salary-label hidden" for="AKBarsBank"> <span class="salary-text">AKBarsBank</span> <input value="AkBarsBank" id="AKBarsBank" name="bank"  type="radio"></label>
+
+        <label class="salary-label hidden" for="TATNEFT"> <span class="salary-text">TatNeftBank</span> <input value="TatNeftBank" id="TATNEFT" name="bank"  type="radio"></label>
+
+        <label class="salary-label hidden" for="DeutscheBank"> <span class="salary-text">Deutsche Bank</span> <input value="Deutsche Bank" id="DeutscheBank" name="bank"  type="radio"></label>
+
+        <label class="salary-label hidden" for="DZBank"> <span class="salary-text">DZBank</span> <input value="DZBank" id="DZBank" name="bank"  type="radio"></label>
+
+        <label class="salary-label hidden" for="CommerzBank"> <span class="salary-text">CommerzBank</span> <input value="CommerzBank" id="CommerzBank" name="bank"  type="radio"></label>
+
+        <label class="salary-label hidden" for="BankOfAMERICA"> <span class="salary-text">BankOfAMERICA</span> <input value="BankOfAmerica" id="BankOfAMERICA" name="salary"  type="radio"></label>
+
+        <label class="salary-label hidden" for="CitiBank"> <span class="salary-text">CitiBank</span> <input value="CitiBank" id="CitiBank" name="salary"  type="radio"></label>
+
+        <label class="salary-label hidden" for="CNBBank"> <span class="salary-text">CNBBank</span> <input value="CNBBank" id="CNBBank" name="salary"  type="radio"></label>
+
+        <label class="salary-label hidden" for="NYBank"> <span class="salary-text">NYBank</span> <input value="NYBank" id="NYBank" name="salary"  type="radio"></label>
+
+        <label class="salary-label hidden" for="PENSIONERBANK"> <span class="salary-text">PENSIONER BANK</span> <input value="PENSIONERBANK" id="PENSIONERBANK" name="salary"  type="radio"></label>
+
+        <label class="salary-label hidden" for="TheIronBankofBraavos"> <span class="salary-text">The Iron Bank of Braavos</span> <input value="TheIronBankofBraavos" id="TheIronBankofBraavos" name="salary"  type="radio"></label>
+
+        <div class="flex">
+          <button id="backStep3" class="start_btn" type="button">back</button>
+          <span class="empty"></span>
+          <button id="nextStep3" class="start_btn" type="submit" disabled>next</button>
+        </div>
+      </form>
+
     </div>
   </div>
 
