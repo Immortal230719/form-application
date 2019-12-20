@@ -101,15 +101,15 @@
 
         <label class="salary-label hidden" for="BankOfAMERICA"> <span class="salary-text">BankOfAMERICA</span> <input value="BankOfAmerica" id="BankOfAMERICA" name="salary"  type="radio"></label>
 
-        <label class="salary-label hidden" for="CitiBank"> <span class="salary-text">CitiBank</span> <input value="CitiBank" id="CitiBank" name="salary"  type="radio"></label>
+        <label class="salary-label hidden" for="CitiBank"> <span class="salary-text">CitiBank</span> <input value="CitiBank" id="CitiBank" name="bank"  type="radio"></label>
 
-        <label class="salary-label hidden" for="CNBBank"> <span class="salary-text">CNBBank</span> <input value="CNBBank" id="CNBBank" name="salary"  type="radio"></label>
+        <label class="salary-label hidden" for="CNBBank"> <span class="salary-text">CNBBank</span> <input value="CNBBank" id="CNBBank" name="bank"  type="radio"></label>
 
-        <label class="salary-label hidden" for="NYBank"> <span class="salary-text">NYBank</span> <input value="NYBank" id="NYBank" name="salary"  type="radio"></label>
+        <label class="salary-label hidden" for="NYBank"> <span class="salary-text">NYBank</span> <input value="NYBank" id="NYBank" name="bank"  type="radio"></label>
 
-        <label class="salary-label hidden" for="PENSIONERBANK"> <span class="salary-text">PENSIONER BANK</span> <input value="PENSIONERBANK" id="PENSIONERBANK" name="salary"  type="radio"></label>
+        <label class="salary-label hidden" for="PENSIONERBANK"> <span class="salary-text">PENSIONER BANK</span> <input value="PENSIONERBANK" id="PENSIONERBANK" name="bank"  type="radio"></label>
 
-        <label class="salary-label hidden" for="TheIronBankofBraavos"> <span class="salary-text">The Iron Bank of Braavos</span> <input value="TheIronBankofBraavos" id="TheIronBankofBraavos" name="salary"  type="radio"></label>
+        <label class="salary-label hidden" for="TheIronBankofBraavos"> <span class="salary-text">The Iron Bank of Braavos</span> <input value="TheIronBankofBraavos" id="TheIronBankofBraavos" name="bank"  type="radio"></label>
 
         <div class="flex">
           <button id="backStep3" class="start_btn" type="button">back</button>
@@ -120,7 +120,7 @@
     </div>
     <div id="finish" class="wrapper hidden">
       <h2>Check your input data:</h2>
-      <ul class="finish-list">
+      <ul id="finish-data" class="finish-list">
         <li></li>
         <li></li>
         <li></li>
@@ -128,6 +128,11 @@
         <li></li>
         <li></li>
       </ul>
+      <div class="flex">
+        <button id="backFinish" class="start_btn" type="button">back</button>
+        <span class="empty"></span>
+        <button id="finishBtn" class="start_btn" type="button">finish</button>
+      </div>
     </div>
   </div>
 

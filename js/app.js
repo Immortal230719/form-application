@@ -97,7 +97,8 @@ $(document).ready(function() {
       age: Cookies.get("age"),
       country: Cookies.get("country"),
       city: Cookies.get("city"),
-      salary: Cookies.get("salary")
+      salary: Cookies.get("salary"),
+      bank: Cookies.get("bank")
     };
   }
   var json;
@@ -119,7 +120,8 @@ $(document).ready(function() {
   var stepTwoBtnBack = $("#backStep2");
   var stepTwoBtnNext = $("#nextStep2");
   var stepTwoFormLabels = $("#salary .salary-text");
-  var salaryValue = "";
+  var salaryValue = userObj.salary;
+  var salaryText = "";
 
   // STEP THREE variables
 
@@ -128,13 +130,32 @@ $(document).ready(function() {
   var stepThreeBtnNext = $("#nextStep3");
   var bankValue = "";
 
+  // STEP FINISH variables
+
+  var finishWrapper = $("#finish");
+
   // get cookies
-  if (Cookies.get("salary")) {
+  if (Cookies.get("bank")) {
     $("#welcome").fadeOut(0);
-    stepOne.fadeOut(100);
     var salaryCookie = Cookies.get("salary");
     setCookieSalary(salaryCookie);
     renderStepTwo(userObj);
+    salaryText = $("#salary input:checked")
+      .parent()
+      .text();
+    renderFinish(userObj);
+
+    finishWrapper.fadeIn(1000);
+    stepTwoBtnNext.prop("disabled", false);
+    stepThreeBtnNext.prop("disabled", false);
+  } else if (Cookies.get("salary")) {
+    $("#welcome").fadeOut(0);
+    stepOne.fadeOut(100);
+
+    var salaryCookie = Cookies.get("salary");
+    setCookieSalary(salaryCookie);
+    renderStepTwo(userObj);
+
     stepTwo.fadeIn(1000);
     stepTwoBtnNext.prop("disabled", false);
   } else if (!$.isEmptyObject(Cookies.get())) {
@@ -368,7 +389,11 @@ $(document).ready(function() {
   // salary form handler
 
   $("#salary").on("click", function(e) {
-    salaryValue = $("input:checked").val();
+    salaryValue = $("#salary input:checked").val();
+    salaryText = $("#salary input:checked")
+      .parent()
+      .text();
+    console.log(salaryText);
     if (salaryValue) {
       stepTwoBtnNext.prop("disabled", false);
     }
@@ -388,46 +413,7 @@ $(document).ready(function() {
       $("#step3Message2").fadeIn(0);
       return;
     }
-    switch (cityFilter) {
-      case "Moscow": {
-        getBanksFromArrays(moscowArr, salaryArr, salaryValue);
-        break;
-      }
-      case "SaintPeterburg": {
-        getBanksFromArrays(spbArr, salaryArr, salaryValue);
-        break;
-      }
-      case "Kazan": {
-        getBanksFromArrays(kazanArr, salaryArr, salaryValue);
-        break;
-      }
-      case "Berlin": {
-        getBanksFromArrays(berlinArr, salaryArr, salaryValue);
-        renderPensionerBank(ageFilter);
-        break;
-      }
-      case "Gamburg": {
-        getBanksFromArrays(berlinArr, salaryArr, salaryValue);
-        renderPensionerBank(ageFilter);
-        break;
-      }
-      case "Dusseldorf": {
-        getBanksFromArrays(dusseldorfArr, salaryArr, salaryValue);
-        renderPensionerBank(ageFilter);
-        break;
-      }
-      case "NewYork": {
-        getBanksFromArrays(nYorkArr, salaryArr, salaryValue);
-        renderPensionerBank(ageFilter);
-        break;
-      }
-      case "LosAngeles": {
-        $("#step3Message").fadeIn(0);
-        break;
-      }
-      default:
-        break;
-    }
+    renderBanks(cityFilter, ageFilter);
   });
 
   //STEP THREE
@@ -462,8 +448,20 @@ $(document).ready(function() {
     Cookies.set("bank", bankValue, { expires: 7 });
     json = JSON.stringify(userObj);
     stepThreeWrapper.fadeOut(0);
-    $("#finish").fadeIn(1000);
-    console.log(userObj);
+    finishWrapper.fadeIn(1000);
+    renderFinish(userObj);
+  });
+
+  // STEP FINISH
+
+  $("#backFinish").on("click", function() {
+    stepThreeBtnNext.prop("disabled", false);
+    finishWrapper.fadeOut(0);
+    var ageNumber = parseInt(userObj.age);
+    renderBanks(userObj.city, ageNumber);
+    setCookieBank(userObj.bank);
+    stepThreeWrapper.fadeIn(1000);
+    return;
   });
 
   // FUNCTIONS
@@ -536,13 +534,20 @@ $(document).ready(function() {
     return;
   }
 
+  function setCookieBank(bankValueStr) {
+    if (typeof bankValueStr === "string") {
+      $("#" + bankValueStr).prop("checked", true);
+    } else return;
+    return;
+  }
+
   function clearCookies() {
     Cookies.remove("name");
     Cookies.remove("age");
     Cookies.remove("country");
     Cookies.remove("city");
     Cookies.remove("salary");
-    Cookies.remove();
+    Cookies.remove("bank");
     return;
   }
 
@@ -563,13 +568,56 @@ $(document).ready(function() {
       }
     }
     console.log(resultArr);
-    // renser result banks
+    // render result banks
     resultArr.forEach(e =>
       $(`#${e}`)
         .parents()
         .fadeIn()
     );
     return;
+  }
+
+  function renderBanks(bankValue, ageValue) {
+    switch (bankValue) {
+      case "Moscow": {
+        getBanksFromArrays(moscowArr, salaryArr, salaryValue);
+        break;
+      }
+      case "SaintPeterburg": {
+        getBanksFromArrays(spbArr, salaryArr, salaryValue);
+        break;
+      }
+      case "Kazan": {
+        getBanksFromArrays(kazanArr, salaryArr, salaryValue);
+        break;
+      }
+      case "Berlin": {
+        getBanksFromArrays(berlinArr, salaryArr, salaryValue);
+        renderPensionerBank(ageValue);
+        break;
+      }
+      case "Gamburg": {
+        getBanksFromArrays(berlinArr, salaryArr, salaryValue);
+        renderPensionerBank(ageValue);
+        break;
+      }
+      case "Dusseldorf": {
+        getBanksFromArrays(dusseldorfArr, salaryArr, salaryValue);
+        renderPensionerBank(ageValue);
+        break;
+      }
+      case "NewYork": {
+        getBanksFromArrays(nYorkArr, salaryArr, salaryValue);
+        renderPensionerBank(ageValue);
+        break;
+      }
+      case "LosAngeles": {
+        $("#step3Message").fadeIn(0);
+        break;
+      }
+      default:
+        break;
+    }
   }
 
   function renderPensionerBank(userAge) {
@@ -581,5 +629,16 @@ $(document).ready(function() {
     return;
   }
 
-  function renderFinish(objectOfUser) {}
+  function renderFinish(objectOfUser) {
+    var finishUl = $("#finish-data > li");
+    Object.entries(objectOfUser).forEach(function(e, index) {
+      if (e[0] === "salary") {
+        $(finishUl[index]).text("salary :" + salaryText);
+      } else {
+        var finishText = e.join(" : ");
+        $(finishUl[index]).text(finishText);
+      }
+    });
+    return;
+  }
 });

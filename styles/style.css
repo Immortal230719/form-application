@@ -40,9 +40,10 @@ label.error {
   box-shadow: 1px 1px 10px 2px rgba(143, 139, 139, 0.795);
   border: 0;
   border-radius: 40px;
-  font-size: 25px;
+  font-size: 20px;
   color: antiquewhite;
   cursor: pointer;
+  text-transform: uppercase;
 }
 .start_btn:disabled {
   background-color: rgb(150, 150, 150);
@@ -128,12 +129,14 @@ select {
 }
 
 .finish-list li {
+  padding-left: 20px;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   height: 50px;
   width: 300px;
   background-color: rgba(175, 175, 175, 0.548);
   border: 1px solid rgb(255, 255, 255);
+  color: rgba(88, 88, 88, 0.842);
 }
 
