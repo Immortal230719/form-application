@@ -119,3 +119,21 @@ select {
   box-shadow: 0 0 0 0;
 }
 
+.finish-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+  list-style: none;
+}
+
+.finish-list li {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  width: 300px;
+  background-color: rgba(175, 175, 175, 0.548);
+  border: 1px solid rgb(255, 255, 255);
+}
+

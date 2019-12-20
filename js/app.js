@@ -121,11 +121,12 @@ $(document).ready(function() {
   var stepTwoFormLabels = $("#salary .salary-text");
   var salaryValue = "";
 
-  // step three variables
+  // STEP THREE variables
 
   var stepThreeWrapper = $("#stepThree");
   var stepThreeBtnBack = $("#backStep3");
   var stepThreeBtnNext = $("#nextStep3");
+  var bankValue = "";
 
   // get cookies
   if (Cookies.get("salary")) {
@@ -434,15 +435,17 @@ $(document).ready(function() {
   // bank form handler
 
   $("#bank").on("click", function(e) {
-    bankValue = $("input:checked").val();
+    bankValue = $(this)
+      .find("input:checked")
+      .val();
     if (bankValue) {
+      userObj.bank = bankValue;
       stepThreeBtnNext.prop("disabled", false);
     }
     return;
   });
 
   stepThreeBtnBack.on("click", function() {
-    setCookieSalary(userObj.salary);
     nextStepBtn1.prop("disabled", false);
     stepThreeWrapper.fadeOut(0);
     stepTwo.fadeIn(1000);
@@ -452,6 +455,15 @@ $(document).ready(function() {
     $("#step3Message").fadeOut(0);
     $("#step3Message2").fadeOut(0);
     return;
+  });
+
+  $("#bank").on("submit", function(e) {
+    e.preventDefault();
+    Cookies.set("bank", bankValue, { expires: 7 });
+    json = JSON.stringify(userObj);
+    stepThreeWrapper.fadeOut(0);
+    $("#finish").fadeIn(1000);
+    console.log(userObj);
   });
 
   // FUNCTIONS
@@ -568,4 +580,6 @@ $(document).ready(function() {
     } else return;
     return;
   }
+
+  function renderFinish(objectOfUser) {}
 });
