@@ -134,18 +134,20 @@ $(document).ready(function() {
 
   var finishWrapper = $("#finish");
 
-  // get cookies
+  // get & set cookies
   if (Cookies.get("bank")) {
     $("#welcome").fadeOut(0);
     var salaryCookie = Cookies.get("salary");
+    var ageCheck = parseInt(userObj.age);
+    renderBanks(userObj.city, ageCheck);
+    setCookieBank(userObj.bank);
+    stepThreeWrapper.fadeIn(1000);
     setCookieSalary(salaryCookie);
     renderStepTwo(userObj);
     salaryText = $("#salary input:checked")
       .parent()
       .text();
     renderFinish(userObj);
-
-    finishWrapper.fadeIn(1000);
     stepTwoBtnNext.prop("disabled", false);
     stepThreeBtnNext.prop("disabled", false);
   } else if (Cookies.get("salary")) {
@@ -212,8 +214,7 @@ $(document).ready(function() {
     "Please check your input."
   );
 
-  inputUserName.rules("add", { pattern: "[a-zA-Z]" });
-
+  inputUserName.rules("add", { pattern: "^[a-zA-Z]+$" });
   // first page
 
   $("#startBtn").on("click", function() {
@@ -316,24 +317,19 @@ $(document).ready(function() {
   var citySelect = formStepOne.find("select[name='city']");
   for (let index = 0; index < citySelect.length; index++) {
     $(citySelect[index]).on("change", function() {
+      var checkName = $("#userName").val();
+      var checkAge = $("#userAge").val();
       userObj.city = $(this).val();
       setTimeout(function() {
         if (!validator.invalid.age && !validator.invalid.name) {
           nextStepBtn1.prop("disabled", false);
         }
-        if (userObj.city === "default") {
+        if (userObj.city === "default" || checkName || checkAge) {
           nextStepBtn1.prop("disabled", true);
         }
       }, 0);
     });
   }
-
-  // clear Cookies
-
-  clearCookiesBtn.on("click", function(e) {
-    e.preventDefault();
-    clearCookies();
-  });
 
   formStepOne.on("submit", function(e) {
     e.preventDefault();
@@ -393,7 +389,6 @@ $(document).ready(function() {
     salaryText = $("#salary input:checked")
       .parent()
       .text();
-    console.log(salaryText);
     if (salaryValue) {
       stepTwoBtnNext.prop("disabled", false);
     }
@@ -432,6 +427,7 @@ $(document).ready(function() {
   });
 
   stepThreeBtnBack.on("click", function() {
+    stepThreeBtnNext.prop("disabled", true);
     nextStepBtn1.prop("disabled", false);
     stepThreeWrapper.fadeOut(0);
     stepTwo.fadeIn(1000);
@@ -446,22 +442,27 @@ $(document).ready(function() {
   $("#bank").on("submit", function(e) {
     e.preventDefault();
     Cookies.set("bank", bankValue, { expires: 7 });
+    userObj.bank = bankValue;
     json = JSON.stringify(userObj);
-    stepThreeWrapper.fadeOut(0);
-    finishWrapper.fadeIn(1000);
+    finishWrapper.fadeIn(500);
     renderFinish(userObj);
   });
 
   // STEP FINISH
 
   $("#backFinish").on("click", function() {
-    stepThreeBtnNext.prop("disabled", false);
-    finishWrapper.fadeOut(0);
-    var ageNumber = parseInt(userObj.age);
-    renderBanks(userObj.city, ageNumber);
-    setCookieBank(userObj.bank);
-    stepThreeWrapper.fadeIn(1000);
-    return;
+    finishWrapper.fadeOut(500);
+  });
+
+  $("#finishBtn").on("click", function() {
+    clearCookies();
+    location.reload();
+  });
+
+  finishWrapper.on("click", function(e) {
+    if (e.target.id === "finish") {
+      $(this).fadeOut();
+    } else return;
   });
 
   // FUNCTIONS
@@ -537,7 +538,7 @@ $(document).ready(function() {
   function setCookieBank(bankValueStr) {
     if (typeof bankValueStr === "string") {
       $("#" + bankValueStr).prop("checked", true);
-    } else return;
+    }
     return;
   }
 
@@ -567,7 +568,6 @@ $(document).ready(function() {
         } else continue;
       }
     }
-    console.log(resultArr);
     // render result banks
     resultArr.forEach(e =>
       $(`#${e}`)

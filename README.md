@@ -4,13 +4,9 @@ This is the Project about simple logic with forms and inputs.
 
 ### Run Project:
 
-* first
+* just write in your npm command line:
 ```
-npm install
-```
-* then
-```
-gulp
+npm run gulp
 ```
 
 Enjoy!
