@@ -2,143 +2,147 @@
 
 $(document).ready(function() {
   // banks in city
-
-  var moscowArr = [
-    "sberbank",
+  const moscowArr = [
+    "SberBank",
     "VTB",
-    "mtsbank",
-    "akibank",
-    "avangard",
+    "MTSBank",
+    "Akibank",
+    "Avangard",
     "TheIronBankofBraavos"
   ];
-  var spbArr = ["sberbank", "alfabank", "SPBBank", "TheIronBankofBraavos"];
-  var kazanArr = ["AKBarsBank", "TATNEFT", "VTB", "TheIronBankofBraavos"];
-  var berlinArr = ["DeutscheBank", "DZBank", "TheIronBankofBraavos"];
-  var dusseldorfArr = ["CommerzBank", "TheIronBankofBraavos"];
-  var nYorkArr = [
-    "BankOfAMERICA",
+  const spbArr = ["SberBank", "AlfaBank", "SPBBank", "TheIronBankofBraavos"];
+  const kazanArr = ["AKBarsBank", "TatNeftBank", "VTB", "TheIronBankofBraavos"];
+  const berlinArr = ["DeutscheBank", "DZBank", "TheIronBankofBraavos"];
+  const dusseldorfArr = ["CommerzBank", "TheIronBankofBraavos"];
+  const nYorkArr = [
+    "BankOfAmerica",
     "CitiBank",
     "CNBBank",
     "NYBank",
-    "TheIronBankofBraavos"
+    "TheIronBankofBraavos",
+    "PensionerBank"
   ];
-  var losAngelesArr = [];
+  const losAngelesArr = [];
 
   // banks in salary
 
-  var salaryArr = [
+  const salaryArr = [
     [
-      "sberbank",
+      "SberBank",
       "VTB",
-      "mtsbank",
-      "alfabank",
+      "MTSBank",
+      "AlfaBank",
       "AKBarsBank",
-      "BankOfAMERICA",
+      "BankOfAmerica",
       "CitiBank",
       "CNBBank",
       "DeutscheBank",
       "DZBank",
-      "CommerzBank"
+      "CommerzBank",
+      "PensionerBank"
     ],
     [
-      "sberbank",
+      "SberBank",
       "VTB",
-      "mtsbank",
-      "alfabank",
+      "MTSBank",
+      "AlfaBank",
       "AKBarsBank",
-      "TATNEFT",
+      "TatNeftBank",
       "VTB",
-      "BankOfAMERICA",
+      "BankOfAmerica",
       "CitiBank",
       "CNBBank",
       "DeutscheBank",
       "DZBank",
-      "CommerzBank"
+      "CommerzBank",
+      "PensionerBank"
     ],
     [
-      "sberbank",
+      "SberBank",
       "VTB",
-      "mtsbank",
-      "akibank",
-      "alfabank",
+      "MTSBank",
+      "Akibank",
+      "AlfaBank",
       "AKBarsBank",
-      "TATNEFT",
+      "TatNeftBank",
       "VTB",
-      "BankOfAMERICA",
-      "NYBank",
-      "DeutscheBank",
-      "DZBank",
-      "CommerzBank"
-    ],
-    [
-      "sberbank",
-      "VTB",
-      "avangard",
-      "SPBBank",
-      "AKBarsBank",
-      "TATNEFT",
-      "VTB",
-      "BankOfAMERICA",
+      "BankOfAmerica",
       "NYBank",
       "DeutscheBank",
       "DZBank",
       "CommerzBank",
-      "TheIronBankofBraavos"
+      "PensionerBank"
+    ],
+    [
+      "SberBank",
+      "VTB",
+      "Avangard",
+      "SPBBank",
+      "AKBarsBank",
+      "TatNeftBank",
+      "VTB",
+      "BankOfAmerica",
+      "NYBank",
+      "DeutscheBank",
+      "DZBank",
+      "CommerzBank",
+      "TheIronBankofBraavos",
+      "PensionerBank"
     ]
   ];
 
   // variables
-  var salaryRusArray = ["less 10000", "10000-25000", "25000-50000", "50000+"];
-  var salaryUSAArray = ["less 100", "100-500", "500-1500", "1500+"];
-  var userObj = {};
-  if (!$.isEmptyObject(Cookies.get())) {
+  const salaryRusArray = ["less 10000", "10000-25000", "25000-50000", "50000+"];
+  const salaryUSAArray = ["less 100", "100-500", "500-1500", "1500+"];
+  let userObj = {};
+  if (!$.isEmptyObject(Cookies.getJSON())) {
+    const cookie = Cookies.getJSON();
     userObj = {
-      name: Cookies.get("name"),
-      age: Cookies.get("age"),
-      country: Cookies.get("country"),
-      city: Cookies.get("city"),
-      salary: Cookies.get("salary"),
-      bank: Cookies.get("bank")
+      name: cookie.currentUser.name,
+      age: cookie.currentUser.age,
+      country: cookie.currentUser.country,
+      city: cookie.currentUser.city,
+      salary: cookie.currentUser.salary,
+      bank: cookie.currentUser.bank
     };
   }
-  var json;
-  var stepOne = $("#stepOne");
-  var stepTwo = $("#stepTwo");
-  var nextStepBtn1 = $("#nextStep1");
-  var backStepBtn1 = $("#backStep1");
-  var inputUserName = $("#userName");
-  var inputUserAge = $("#userAge");
-  var selectUserCountry = $("#countrySelect");
-  var selectRusCity = $("#rusCitySelect");
-  var selectGerCity = $("#gerCitySelect");
-  var selectUSACity = $("#usaCitySelect");
-  var formStepOne = $("#formStepOne");
-  var clearCookiesBtn = $("#clearCookies");
+  let json;
+  const stepOne = $("#stepOne");
+  const stepTwo = $("#stepTwo");
+  const nextStepBtn1 = $("#nextStep1");
+  const backStepBtn1 = $("#backStep1");
+  const inputUserName = $("#userName");
+  const inputUserAge = $("#userAge");
+  const selectUserCountry = $("#countrySelect");
+  const selectRusCity = $("#rusCitySelect");
+  const selectGerCity = $("#gerCitySelect");
+  const selectUSACity = $("#usaCitySelect");
+  const formStepOne = $("#formStepOne");
 
   // STEP TWO variables
 
-  var stepTwoBtnBack = $("#backStep2");
-  var stepTwoBtnNext = $("#nextStep2");
-  var stepTwoFormLabels = $("#salary .salary-text");
-  var salaryValue = userObj.salary;
-  var salaryText = "";
+  const stepTwoBtnBack = $("#backStep2");
+  const stepTwoBtnNext = $("#nextStep2");
+  const stepTwoFormLabels = $("#salary .salary-text");
+  let salaryValue = userObj.salary;
+  let salaryText = "";
 
   // STEP THREE variables
 
-  var stepThreeWrapper = $("#stepThree");
-  var stepThreeBtnBack = $("#backStep3");
-  var stepThreeBtnNext = $("#nextStep3");
-  var bankValue = "";
+  const stepThreeWrapper = $("#stepThree");
+  const stepThreeBtnBack = $("#backStep3");
+  const stepThreeBtnNext = $("#nextStep3");
+  let bankValue = "";
 
   // STEP FINISH variables
 
-  var finishWrapper = $("#finish");
+  const finishWrapper = $("#finish");
 
   // get & set cookies
-  if (Cookies.get("bank")) {
+  if (userObj.bank !== undefined) {
     $("#welcome").fadeOut(0);
-    var salaryCookie = Cookies.get("salary");
-    var ageCheck = parseInt(userObj.age);
+    const salaryCookie = userObj.salary;
+    const ageCheck = parseInt(userObj.age);
     renderBanks(userObj.city, ageCheck);
     setCookieBank(userObj.bank);
     stepThreeWrapper.fadeIn(1000);
@@ -150,17 +154,16 @@ $(document).ready(function() {
     renderFinish(userObj);
     stepTwoBtnNext.prop("disabled", false);
     stepThreeBtnNext.prop("disabled", false);
-  } else if (Cookies.get("salary")) {
+  } else if (userObj.salary !== undefined) {
     $("#welcome").fadeOut(0);
     stepOne.fadeOut(100);
 
-    var salaryCookie = Cookies.get("salary");
-    setCookieSalary(salaryCookie);
+    setCookieSalary(userObj.salary);
     renderStepTwo(userObj);
 
     stepTwo.fadeIn(1000);
     stepTwoBtnNext.prop("disabled", false);
-  } else if (!$.isEmptyObject(Cookies.get())) {
+  } else if (userObj.name !== undefined) {
     $("#welcome").fadeOut(0);
     nextStepBtn1.prop("disabled", false);
 
@@ -172,7 +175,7 @@ $(document).ready(function() {
 
   // validate forms
 
-  var validator = formStepOne.validate({
+  let validator = formStepOne.validate({
     rules: {
       name: {
         required: true,
@@ -208,7 +211,7 @@ $(document).ready(function() {
   $.validator.addMethod(
     "pattern",
     function(value, element, regexp) {
-      var re = new RegExp(regexp);
+      let re = new RegExp(regexp);
       return this.optional(element) || re.test(value);
     },
     "Please check your input."
@@ -233,6 +236,10 @@ $(document).ready(function() {
   inputUserName.on("focusout", function() {
     let inputValue = $(this).val();
     setTimeout(function() {
+      // enabled button next if had input select 'city'
+      if (userObj.hasOwnProperty("city")) {
+        nextStepBtn1.prop("disabled", false);
+      }
       if (!validator.invalid.name) {
         userObj.name = inputValue;
       }
@@ -240,10 +247,6 @@ $(document).ready(function() {
         // disabled button next if hasn't validate
         nextStepBtn1.prop("disabled", true);
         return;
-      }
-      // enabled button next if had input select 'city'
-      if (userObj.hasOwnProperty("city")) {
-        nextStepBtn1.prop("disabled", false);
       }
     }, 0);
   });
@@ -254,6 +257,10 @@ $(document).ready(function() {
     let inputAgeValue = $(this).val();
 
     setTimeout(function() {
+      // enabled button next if had input select 'city'
+      if (userObj.hasOwnProperty("city")) {
+        nextStepBtn1.prop("disabled", false);
+      }
       if (!validator.invalid.age) {
         userObj.age = inputAgeValue;
       }
@@ -261,10 +268,6 @@ $(document).ready(function() {
         // disabled button next if hasn't validate
         nextStepBtn1.prop("disabled", true);
         return;
-      }
-      // enabled button next if had input select 'city'
-      if (userObj.hasOwnProperty("city")) {
-        nextStepBtn1.prop("disabled", false);
       }
     }, 0);
   });
@@ -314,17 +317,17 @@ $(document).ready(function() {
 
   // button nextStepOne enabled
 
-  var citySelect = formStepOne.find("select[name='city']");
+  const citySelect = formStepOne.find("select[name='city']");
   for (let index = 0; index < citySelect.length; index++) {
     $(citySelect[index]).on("change", function() {
-      var checkName = $("#userName").val();
-      var checkAge = $("#userAge").val();
+      var checkName = userObj.name;
+      var checkAge = userObj.age;
       userObj.city = $(this).val();
       setTimeout(function() {
         if (!validator.invalid.age && !validator.invalid.name) {
           nextStepBtn1.prop("disabled", false);
         }
-        if (userObj.city === "default" || checkName || checkAge) {
+        if (userObj.city === "default" || !checkName || !checkAge) {
           nextStepBtn1.prop("disabled", true);
         }
       }, 0);
@@ -333,9 +336,9 @@ $(document).ready(function() {
 
   formStepOne.on("submit", function(e) {
     e.preventDefault();
-    var name = $(this.name).val();
-    var age = $(this.age).val();
-    var country = $(this.country).val();
+    let name = $(this.name).val();
+    let age = $(this.age).val();
+    let country = $(this.country).val();
 
     switch (country) {
       case "Russia": {
@@ -359,13 +362,10 @@ $(document).ready(function() {
     userObj.country = country;
     userObj.city = city;
 
-    Cookies.set("name", name, { expires: 7 });
-    Cookies.set("age", age, { expires: 7 });
-    Cookies.set("country", country, { expires: 7 });
-    Cookies.set("city", city, { expires: 7 });
     stepOne.fadeOut(0);
     stepTwo.fadeIn(1000);
     json = JSON.stringify(userObj);
+    Cookies.set("currentUser", json, { expires: 7 });
     renderStepTwo(userObj);
   });
 
@@ -398,12 +398,12 @@ $(document).ready(function() {
   $("#salary").on("submit", function(e) {
     e.preventDefault();
     userObj.salary = salaryValue;
-    Cookies.set("salary", salaryValue, { expires: 7 });
     json = JSON.stringify(userObj);
+    Cookies.set("currentUser", json, { expires: 7 });
     stepTwo.fadeOut(0);
     stepThreeWrapper.fadeIn(1000);
-    var ageFilter = parseInt(userObj.age);
-    var cityFilter = userObj.city;
+    let ageFilter = parseInt(userObj.age);
+    let cityFilter = userObj.city;
     if (userObj.country === "Russia" && ageFilter > 60) {
       $("#step3Message2").fadeIn(0);
       return;
@@ -420,7 +420,6 @@ $(document).ready(function() {
       .find("input:checked")
       .val();
     if (bankValue) {
-      userObj.bank = bankValue;
       stepThreeBtnNext.prop("disabled", false);
     }
     return;
@@ -441,9 +440,9 @@ $(document).ready(function() {
 
   $("#bank").on("submit", function(e) {
     e.preventDefault();
-    Cookies.set("bank", bankValue, { expires: 7 });
     userObj.bank = bankValue;
     json = JSON.stringify(userObj);
+    Cookies.set("currentUser", json, { expires: 7 });
     finishWrapper.fadeIn(500);
     renderFinish(userObj);
   });
@@ -502,24 +501,21 @@ $(document).ready(function() {
   //set cookies stepOne
 
   function setCookieStepOne() {
-    inputUserName.val(Cookies.get("name"));
-    inputUserAge.val(Cookies.get("age"));
-    selectUserCountry.val(Cookies.get("country"));
+    inputUserName.val(userObj.name);
+    inputUserAge.val(userObj.age);
+    selectUserCountry.val(userObj.country);
 
-    var userCountry = Cookies.get("country");
-    var userCity = Cookies.get("city");
-
-    switch (userCountry) {
+    switch (userObj.country) {
       case "Russia": {
-        selectRusCity.fadeIn().val(userCity);
+        selectRusCity.fadeIn().val(userObj.city);
         break;
       }
       case "Germany": {
-        selectGerCity.fadeIn().val(userCity);
+        selectGerCity.fadeIn().val(userObj.city);
         break;
       }
       case "USA": {
-        selectUSACity.fadeIn().val(userCity);
+        selectUSACity.fadeIn().val(userObj.city);
         break;
       }
       default:
@@ -543,21 +539,17 @@ $(document).ready(function() {
   }
 
   function clearCookies() {
-    Cookies.remove("name");
-    Cookies.remove("age");
-    Cookies.remove("country");
-    Cookies.remove("city");
-    Cookies.remove("salary");
+    Cookies.remove("currentUser");
     Cookies.remove("bank");
     return;
   }
 
   function getBanksFromArrays(arrayOfCity, arrayOfSalary, salaryValue) {
-    var indexOfSalary = parseInt(salaryValue);
-    var resultArr = [];
+    const indexOfSalary = parseInt(salaryValue);
+    let resultArr = [];
     // filter our arrays to get resultArray of Banks
     for (let index = 0; index < arrayOfCity.length; index++) {
-      var bankInCity = arrayOfCity[index];
+      let bankInCity = arrayOfCity[index];
       for (
         let index = 0;
         index < arrayOfSalary[indexOfSalary].length;
@@ -622,7 +614,7 @@ $(document).ready(function() {
 
   function renderPensionerBank(userAge) {
     if (userAge > 50) {
-      $("#PENSIONERBANK")
+      $("#PensionerBank")
         .parents()
         .fadeIn(0);
     } else return;
@@ -630,12 +622,12 @@ $(document).ready(function() {
   }
 
   function renderFinish(objectOfUser) {
-    var finishUl = $("#finish-data > li");
+    let finishUl = $("#finish-data > li");
     Object.entries(objectOfUser).forEach(function(e, index) {
       if (e[0] === "salary") {
         $(finishUl[index]).text("salary :" + salaryText);
       } else {
-        var finishText = e.join(" : ");
+        let finishText = e.join(" : ");
         $(finishUl[index]).text(finishText);
       }
     });
